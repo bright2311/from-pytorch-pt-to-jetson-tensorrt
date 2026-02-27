@@ -1,84 +1,83 @@
-# from-pytorch-pt-to-jetson-tensorrt
 
-A simple example for resnet50 image classifier from torchvision pretrained weights to tensorrt c++ inference,including:
+# 🚀 ResNet50 Image Classification: PyTorch → ONNX → TensorRT on Jetson Orin NX
 
-● pytorch python inference and torch2onnx;
+End-to-end deployment pipeline for TorchVision-pretrained ResNet50 on NVIDIA Jetson Orin NX (8GB):
 
-● onnxruntime python inference and onnx to tensorrt engine;
+- ✅ PyTorch Python inference & export to ONNX  
+- ✅ ONNX Runtime inference & conversion to TensorRT engine (`FP16`)  
+- ✅ C++ TensorRT inference on Jetson  
 
-● nvidia jetson c++ tensorrt inference.
+> **Platform**: [Yahboom Jetson Orin NX Super 8G](https://www.yahboom.com/wiki/index.php?title=Jetson_Orin_NX_Super_Developer_Kit)  
+> **Verified Environment**: JetPack 6.2 / L4T 36.4.3 / TensorRT 10.7.0.23
 
-Platform: Yahboom Jetson orin NX Super 8G
+---
 
-The hardware and software environment are listed here:
-```
- Platform                                    Serial Number: [s|XX CLICK TO READ XXX]
-  Machine: aarch64                           Hardware
-  System: Linux                               Model: NVIDIA Jetson Orin NX Engineering Reference Developer Kit Super
-  Distribution: Ubuntu 22.04 Jammy Jellyfish  699-level Part Number: ...
-  Release: 5.15.148-tegra                     P-Number: ...
-  Python: 3.10.12                             Module: NVIDIA Jetson Orin NX (8GB ram)
-                                              SoC: tegra234
- Libraries                                    CUDA Arch BIN: 8.7
-  CUDA: 12.6.85                               L4T: 36.4.3
-  cuDNN: 9.6.0.74                             Jetpack: 6.2
-  TensorRT: 10.7.0.23
-  VPI: 3.2.4                                 Hostname: yahboom
-  Vulkan: 1.3.204                            Interfaces
-  OpenCV: 4.10.0 with CUDA: YES               eno1: ....
-                                              docker0: .....
-```
+## 🖥️ Hardware & Software Environment
 
-# pytorch python inference and torch2onnx
+| Category       | Detail                                                                 |
+|----------------|------------------------------------------------------------------------|
+| **Board**      | NVIDIA Jetson Orin NX Engineering Reference Developer Kit (Super, 8GB RAM) |
+| **SoC**        | `tegra234` (Ampere architecture)                                      |
+| **OS**         | Ubuntu 22.04.4 LTS (kernel `5.15.148-tegra`)                          |
+| **CUDA**       | `12.6.85`                                                             |
+| **TensorRT**   | `10.7.0.23`                                                           |
+| **Python**     | `3.10.12`                                                             |
 
-```Python
-resnet50_imagenet_pytorch.py
-```
-Load resnet50.pt from torchvison, infer and transfer it to onnx model .
+---
 
+## 🐍 Step 1: PyTorch Inference & Export to ONNX
 
-# onnxruntime python inference and onnx to tensorrt engine
-```Python
-resnet50_imagenet_onnx.py
+**Script**: `resnet50_imagenet_pytorch.py`  
+Loads TorchVision ResNet50, performs inference, exports to ONNX:
+
+```python
+# PyTorch model loading and ONNX export
+model = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V1)
+torch.onnx.export(model, dummy_input, "ResNet50.onnx", ...)
 ```
 
-if onnxruntime use cuda provider, jetson onnxruntime-gpu should be installed.
+---
 
-from onnx format model to trt engine:
+## 📦 Step 2: ONNX Runtime & TensorRT Conversion
 
-```Shell
-/usr/src/tensorrt/bin/trtexec --onnx=ResNet50.onnx --saveEngine=ResNet50.engine  --optShapes=input:1x3x224x224  --fp16=true
+**Script**: `resnet50_imagenet_onnx.py`  
+Requires `onnxruntime-gpu` for CUDA acceleration.
+
+**ONNX → TensorRT Engine**:
+```bash
+/usr/src/tensorrt/bin/trtexec \
+  --onnx=ResNet50.onnx \
+  --saveEngine=ResNet50.engine \
+  --optShapes=input:1x3x224x224 \
+  --fp16=true
 ```
 
-# nvidia jetson c++ tensorrt inference
+---
 
-c++ relevated files are listed below.
+## ⚙️ Step 3: C++ TensorRT Inference
 
+**Project Structure**:
 ```
 .
 ├── class_labels.txt
 ├── CMakeLists.txt
-├── images
-│   ├── binoculars.jpeg
-│   ├── reflex_camera.jpeg
-│   └── tabby_tiger_cat.jpg
+├── images/
 ├── main.cpp
-└── models
+└── models/
 ```
 
-compile, make and install:
-```Shell
-cd build/ && rm -rf * && cmake .. && make
+**Build & Run**:
+```bash
+mkdir -p build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release .. && make -j$(nproc)
+./trt_infer --image ../images/tabby_tiger_cat.jpg
 ```
 
-execute the bin file:
-```Shell
-cp trt_infer .. && cd .. && ./trt_infer
-```
+---
 
-# References
-● https://github.com/atinfinity/trt-infer-example-cpp 
-● https://github.com/MrLaki5/TensorRT-onnx-dockerized-inference/blob/main/src/image_classifier.cpp
-● https://github.com/NVIDIA-AI-IOT/jetson_dla_tutorial
+## 📚 References
+1. [TRT-Infer Example (C++)](https://github.com/atinfinity/trt-infer-example-cpp)
+2. [TensorRT ONNX Inference](https://github.com/MrLaki5/TensorRT-onnx-dockerized-inference)
+3. [Jetson DLA Tutorial](https://github.com/NVIDIA-AI-IOT/jetson_dla_tutorial)
 
 
