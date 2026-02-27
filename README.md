@@ -1,12 +1,12 @@
 # from-pytorch-pt-to-jetson-tensorrt
 
-a simple example for resnet50 image classifier from torchvision pretrained weights to tensorrt c++ inference,including:
+A simple example for resnet50 image classifier from torchvision pretrained weights to tensorrt c++ inference,including:
 
-• pytorch python inference and torch2onnx;
+● pytorch python inference and torch2onnx;
 
-• onnxruntime python inference and onnx to tensorrt engine;
+● onnxruntime python inference and onnx to tensorrt engine;
 
-• nvidia jetson c++ tensorrt inference.
+● nvidia jetson c++ tensorrt inference.
 
 Platform: Yahboom Jetson orin NX Super 8G
 
@@ -76,6 +76,9 @@ execute the bin file:
 cp trt_infer .. && cd .. && ./trt_infer
 ```
 
-Part of this prj references https://github.com/atinfinity/trt-infer-example-cpp .
+# References
+● https://github.com/atinfinity/trt-infer-example-cpp 
+● https://github.com/MrLaki5/TensorRT-onnx-dockerized-inference/blob/main/src/image_classifier.cpp
+● https://github.com/NVIDIA-AI-IOT/jetson_dla_tutorial
 
 
