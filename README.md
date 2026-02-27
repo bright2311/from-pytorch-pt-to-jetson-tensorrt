@@ -87,8 +87,11 @@ cmake -DCMAKE_BUILD_TYPE=Release .. && make -j$(nproc)
 ---
 
 ## 📚 References
-1. [TRT-Infer Example (C++)](https://github.com/atinfinity/trt-infer-example-cpp)
-2. [TensorRT ONNX Inference](https://github.com/MrLaki5/TensorRT-onnx-dockerized-inference)
-3. [Jetson DLA Tutorial](https://github.com/NVIDIA-AI-IOT/jetson_dla_tutorial)
+1.  **[C++ TRT Infer Example]**: A minimal C++ example for TensorRT inference.
+    - GitHub: [atinfinity/trt-infer-example-cpp](https://github.com/atinfinity/trt-infer-example-cpp)
+2.  **[TensorRT ONNX Docker]**: Dockerized inference pipeline.
+    - GitHub: [MrLaki5/TensorRT-onnx-dockerized-inference](https://github.com/MrLaki5/TensorRT-onnx-dockerized-inference)
+3.  **[Jetson DLA Tutorial]**: NVIDIA's official tutorial for Jetson acceleration (Note: Link currently returns 404).
+    - GitHub: [NVIDIA-AI-IOT/jetson_dla_tutorial](https://github.com/NVIDIA-AI-IOT/jetson_dla_tutorial)
 
 
