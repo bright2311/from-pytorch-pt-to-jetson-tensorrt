@@ -7,7 +7,7 @@ End-to-end deployment pipeline for TorchVision-pretrained ResNet50 on NVIDIA Jet
 - ✅ ONNX Runtime inference & conversion to TensorRT engine (`FP16`)  
 - ✅ C++ TensorRT inference on Jetson  
 
-> **Platform**: [Yahboom Jetson Orin NX Super 8G](https://www.yahboom.com/wiki/index.php?title=Jetson_Orin_NX_Super_Developer_Kit)  
+> **Platform**: Yahboom Jetson Orin NX Super 8G 
 > **Verified Environment**: JetPack 6.2 / L4T 36.4.3 / TensorRT 10.7.0.23
 
 ---
@@ -32,8 +32,19 @@ Loads TorchVision ResNet50, performs inference, exports to ONNX:
 
 ```python
 # PyTorch model loading and ONNX export
-model = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V1)
-torch.onnx.export(model, dummy_input, "ResNet50.onnx", ...)
+model = torchvision.models.resnet50(weights="DEFAULT")
+
+torch.onnx.export(
+    model.to("cpu"),
+    dummy_input,
+    "models/resnet50_torchvision.onnx",
+    export_params=True,
+    opset_version=13,
+    input_names=["input"],
+    output_names=["output"],
+    dynamic_axes={"input": {0: "batch"}, "output": {0: "batch"}}
+)
+
 ```
 
 ---
