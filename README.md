@@ -1,5 +1,7 @@
 
-# 🚀 ResNet50 Image Classification: PyTorch → ONNX → TensorRT on Jetson Orin NX
+# 🚀 jetson deployment: from entry to master
+
+Take ResNet50 Image Classification for example: PyTorch → ONNX → TensorRT on Jetson Orin NX
 
 End-to-end deployment pipeline for TorchVision-pretrained ResNet50 on NVIDIA Jetson Orin NX (8GB):
 
