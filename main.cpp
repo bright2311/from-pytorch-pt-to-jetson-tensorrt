@@ -11,7 +11,6 @@
 #include <ctime>
 #include <iomanip>
 
-
 const int INPUT_SIZE = 224;
 const int OUTPUT_SIZE = 1000;
 
