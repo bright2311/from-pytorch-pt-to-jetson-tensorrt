@@ -81,9 +81,9 @@ Requires `onnxruntime-gpu` for CUDA acceleration.
 
 **Build & Run**:
 ```bash
-mkdir -p build && cd build
-cmake -DCMAKE_BUILD_TYPE=Release .. && make -j$(nproc)
-./trt_infer --image ../images/tabby_tiger_cat.jpg
+mkdir -p build 
+cd build/ && rm -rf * && cmake .. && make -j$(nproc)
+./trt_infer {model name}  {img name}
 ```
 
 ---
